@@ -1,5 +1,9 @@
 package pages;
 
+import com.codeborne.selenide.SelenideElement;
+import components.CalendarComponent;
+import components.ResultsTableComponent;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
@@ -8,89 +12,103 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class RegistrationPage {
 
+    CalendarComponent calendarComponent = new CalendarComponent();
+    ResultsTableComponent resultsTableComponent = new ResultsTableComponent();
+
+    private final SelenideElement
+            firstNameInput = $("#firstName"),
+            lastNameInput = $("#lastName"),
+            emailInput = $("#userEmail"),
+            genderWrapper = $("#genterWrapper"),
+            userNumberInput = $("#userNumber"),
+            dateOfBirthInput = $("#dateOfBirthInput"),
+            subjectsInput = $("#subjectsInput"),
+            hobbiesWrapper = $("#hobbiesWrapper"),
+            uploadPictureInput = $("#uploadPicture"),
+            currentAddressInput = $("#currentAddress"),
+            stateInput = $("#state"),
+            cityInput = $("#city"),
+            submitButton = $("#submit"),
+            modalTitle = $(".modal-title");
+
     public RegistrationPage openPage() {
         open("/automation-practice-form");
         return this;
     }
 
     public RegistrationPage setFirstName(String value) {
-        $("#firstName").setValue(value);
+        firstNameInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setLastName(String value) {
-        $("#lastName").setValue(value);
+        lastNameInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setEmail(String value) {
-        $("#userEmail").setValue(value);
+        emailInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setGender(String value) {
-        $("#genterWrapper").$(byText(value)).click();
+        genderWrapper.$(byText(value)).click();
         return this;
     }
 
     public RegistrationPage setUserNumber(String value) {
-        $("#userNumber").setValue(value);
+        userNumberInput.setValue(value);
         return this;
     }
 
     public RegistrationPage setBirthDate(String day, String month, String year) {
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__year-select").selectOption(year);
-        $(".react-datepicker__month-select").selectOption(month);
-        $(".react-datepicker__month").$(byText(day)).click();
-
+        dateOfBirthInput.click();
+        calendarComponent.setDate(day, month, year);
         return this;
     }
 
     public RegistrationPage setSubject(String value) {
-        $("#subjectsInput").setValue(value).pressEnter();
+        subjectsInput.setValue(value).pressEnter();
         return this;
     }
 
     public RegistrationPage setHobby(String value) {
-        $("#hobbiesWrapper").$(byText(value)).click();
+        hobbiesWrapper.$(byText(value)).click();
         return this;
     }
 
     public RegistrationPage uploadPicture(String value) {
-        $("#uploadPicture").uploadFromClasspath(value);
+        uploadPictureInput.uploadFromClasspath(value);
         return this;
     }
 
     public RegistrationPage setAddress(String value) {
-        $("#currentAddress").scrollTo().shouldBe(visible);
-        $("#currentAddress").setValue(value);
-
+        currentAddressInput.scrollTo().shouldBe(visible).setValue(value);
         return this;
     }
 
     public RegistrationPage setStateAndCity(String state, String city) {
-        $("#state").click();
+        stateInput.click();
         $(byText(state)).click();
 
-        $("#city").click();
+        cityInput.click();
         $(byText(city)).click();
 
         return this;
     }
 
     public RegistrationPage submit() {
-        $("#submit").click();
+        submitButton.click();
         return this;
     }
 
     public RegistrationPage checkModalTitle(String value) {
-        $(".modal-title").shouldHave(text(value));
+        modalTitle.shouldHave(text(value));
         return this;
     }
 
     public RegistrationPage checkResult(String key, String value) {
-        $(".table").shouldHave(text(key), text(value));
+        resultsTableComponent.checkResult(key, value);
         return this;
     }
 }
