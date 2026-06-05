@@ -3,7 +3,7 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import components.CalendarComponent;
 import components.ResultsTableComponent;
-
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
@@ -33,6 +33,12 @@ public class RegistrationPage {
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
+
+        executeJavaScript("""
+            document.getElementById('fixedban')?.remove();
+            document.querySelector('footer')?.remove();
+            """);
+
         return this;
     }
 
