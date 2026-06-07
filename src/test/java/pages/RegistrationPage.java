@@ -33,13 +33,17 @@ public class RegistrationPage {
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
+        return this;
+    }
 
+    public RegistrationPage removeBanners() {
         executeJavaScript("""
             document.getElementById('fixedban')?.remove();
             document.querySelector('footer')?.remove();
             """);
 
         return this;
+
     }
 
     public RegistrationPage setFirstName(String value) {
